@@ -19,7 +19,7 @@ MODEL_IDS = {
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--phase", choices=("inventory", "audit", "security", "implementation",
+    parser.add_argument("--phase", choices=("inventory", "audit", "security", "implementation", "remediation",
                                              "verification", "certification",
                                              "hard-defect"), required=True)
     parser.add_argument("--cd", type=Path, default=Path.cwd())

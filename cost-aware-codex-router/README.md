@@ -7,7 +7,7 @@ A Codex skill for preventing expensive monolithic coding runs.
 - `scripts/estimate_task.py` — lightweight planning-time estimator.
 - `scripts/route_task.py` — deterministic phase/model recommendation helper.
 - `scripts/run_routed.py` — launches a fresh Codex CLI phase with the selected model.
-- `scripts/run_router.py` — runs the complete read-only validation workflow with automatic phase switching.
+- `scripts/run_router.py` — runs validation or full realignment with automatic phase switching.
 - `references/PLAYCE_PROFILE.md` — profile derived from the supplied PLAYCE realignment work order.
 - `agents/openai.yaml` — UI metadata.
 
@@ -44,6 +44,18 @@ python3 scripts/run_router.py \
   --instructions istruzioni-playce.md \
   --cd /path/to/PLAYCE
 ```
+
+For validation plus implementation of the useful, unambiguous changes:
+
+```bash
+python3 scripts/run_router.py \
+  --mode realignment \
+  --instructions istruzioni-playce.md \
+  --cd /path/to/PLAYCE
+```
+
+Realignment permits code and test changes only in remediation/verification;
+deployment, push, and secret changes remain out of scope.
 
 The literal `/run_router` at the top or bottom of a prompt is the skill's
 trigger convention. Native UI slash-command registration is not provided by

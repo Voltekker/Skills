@@ -33,10 +33,11 @@ choice. Pass the compact handoff artifact or phase prompt through stdin. Use
 `--dry-run` to inspect the selected model without starting Codex.
 
 If the user includes `/run_router` at the beginning or end of a complex
-validation prompt, treat it as a request to run `scripts/run_router.py`. Pass
-the prompt in an instructions file, run the five read-only phases in order,
-and carry each phase output into the next one. `/run_router` is a skill
-convention, not a native UI slash command.
+validation or realignment prompt, treat it as a request to run
+`scripts/run_router.py`. Use `--mode realignment` when the user requests the
+changes to be implemented; use `--mode audit` for read-only validation. Carry
+each phase output into the next one. `/run_router` is a skill convention, not
+a native UI slash command.
 
 ## Default routing policy
 

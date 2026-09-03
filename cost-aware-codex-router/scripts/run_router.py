@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a read-only, multi-phase Codex validation with automatic model routing."""
+"""Run a multi-phase Codex validation or realignment with automatic routing."""
 import argparse
 import os
 import shutil
@@ -14,8 +14,9 @@ PHASES = (
     ("inventory", "Inspect the repository and supplied instructions. Build the Task Budget Card and handoff."),
     ("audit", "Audit requirements against implementation. Produce PASS/FAIL/PARTIAL/NOT VERIFIED/BLOCKED evidence and P0/P1/P2 gaps."),
     ("security", "Audit auth, authorization, RLS, input validation, data integrity, idempotency, secrets, and mock/analytics boundaries."),
-    ("verification", "Run the smallest relevant tests and verify required mobile, desktop, backend, and deployment flows. Do not modify files."),
-    ("certification", "Independently certify P0 requirements, unresolved risks, evidence, and blockers. Do not modify files."),
+    ("remediation", "Implement the approved, unambiguous P0/P1/P2 fixes, update relevant tests, and keep the changes minimal and compatible."),
+    ("verification", "Run the smallest relevant tests and verify required mobile, desktop, backend, and deployment flows. Fix only reproducible defects caused by the work order."),
+    ("certification", "Independently certify P0 requirements, unresolved risks, evidence, and blockers."),
 )
 MODEL_IDS = {"luna": "gpt-5.6-luna", "terra": "gpt-5.6-terra", "sol": "gpt-5.6-sol"}
 
@@ -25,6 +26,7 @@ def main():
     parser.add_argument("--instructions", type=Path, required=True)
     parser.add_argument("--cd", type=Path, default=Path.cwd())
     parser.add_argument("--artifacts-dir", type=Path)
+    parser.add_argument("--mode", choices=("realignment", "audit"), default="realignment")
     parser.add_argument("--independent-review", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -43,11 +45,16 @@ def main():
         model_id = os.environ.get(f"COST_ROUTER_{model.upper()}_MODEL", MODEL_IDS[model])
         command = ["codex", "exec", "--ephemeral", "--model", model_id,
                    "-c", f'model_reasoning_effort="{reasoning}"', "--cd", str(args.cd), "-"]
+        mutation = (args.mode == "realignment" and phase in {"remediation", "verification"})
+        control = ("You may modify application code and tests only when required by the work order. "
+                   "Do not deploy, push, or alter secrets." if mutation else
+                   "Do not modify files, databases, deployments, or configuration.")
         prompt = f"""{base}
 
-ROUTER CONTROL: You are running phase {phase}. Do not modify files, databases, deployments, or configuration.
+ROUTER CONTROL: You are running phase {phase} in {args.mode} mode. {control}
 Objective: {objective}
 Return the required checkpoint fields from the skill. Write a compact handoff suitable for the next phase.
+In realignment mode, stop only on the specific ambiguous or contradictory point and continue independent work where possible.
 
 Previous phase handoff:
 {previous}
