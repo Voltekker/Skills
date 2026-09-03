@@ -7,6 +7,7 @@ A Codex skill for preventing expensive monolithic coding runs.
 - `scripts/estimate_task.py` — lightweight planning-time estimator.
 - `scripts/route_task.py` — deterministic phase/model recommendation helper.
 - `scripts/run_routed.py` — launches a fresh Codex CLI phase with the selected model.
+- `scripts/run_router.py` — runs the complete read-only validation workflow with automatic phase switching.
 - `references/PLAYCE_PROFILE.md` — profile derived from the supplied PLAYCE realignment work order.
 - `agents/openai.yaml` — UI metadata.
 
@@ -35,3 +36,15 @@ python3 scripts/run_routed.py --phase implementation --cd /path/to/repo < phase-
 ```
 
 The launcher starts a new process with `--model`; it does not mutate an already-running session.
+
+For a complete validation workflow:
+
+```bash
+python3 scripts/run_router.py \
+  --instructions istruzioni-playce.md \
+  --cd /path/to/PLAYCE
+```
+
+The literal `/run_router` at the top or bottom of a prompt is the skill's
+trigger convention. Native UI slash-command registration is not provided by
+the Codex Skills format.

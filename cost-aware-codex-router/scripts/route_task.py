@@ -18,7 +18,7 @@ def route(phase, *, cross_subsystem=False, repeated_failure=False,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--phase", choices=("inventory", "audit", "implementation",
+    parser.add_argument("--phase", choices=("inventory", "audit", "security", "implementation",
                                              "verification", "certification",
                                              "hard-defect"), required=True)
     parser.add_argument("--cross-subsystem", action="store_true")
