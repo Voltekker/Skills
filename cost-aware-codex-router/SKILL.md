@@ -22,6 +22,11 @@ If automatic switching is unavailable:
 2. At an escalation boundary, state the recommended model/reasoning level in one short line.
 3. Preserve a compact handoff artifact so the next phase does not need to reread the full history.
 
+When the runtime supports per-task model selection, run `scripts/route_task.py`
+at each phase boundary and apply its `MODEL` and `REASONING` result to the next
+task. Do not switch a parent session by implication; only use an explicit
+runtime override that reports success.
+
 ## Default routing policy
 
 ### Luna + medium
@@ -88,6 +93,10 @@ Do not spend a long run merely producing this card. Use quick repository/documen
 Time estimates are planning ranges, not promises. Re-estimate after Phase 1 with observed evidence.
 
 If available, run `scripts/estimate_task.py` with observed counts. Otherwise apply the same logic manually.
+
+Use `scripts/route_task.py` for the model/reasoning choice when the runtime
+exposes task-level overrides. Its output is a recommendation, not proof that a
+switch occurred.
 
 ### Inputs
 Estimate these values:
