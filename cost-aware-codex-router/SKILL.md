@@ -32,12 +32,15 @@ fresh `codex exec --model ...` process, which is the supported way to apply the
 choice. Pass the compact handoff artifact or phase prompt through stdin. Use
 `--dry-run` to inspect the selected model without starting Codex.
 
-If the user includes `/run_router` at the beginning or end of a complex
-validation or realignment prompt, treat it as a request to run
-`scripts/run_router.py`. Use `--mode realignment` when the user requests the
-changes to be implemented; use `--mode audit` for read-only validation. Carry
-each phase output into the next one. `/run_router` is a skill convention, not
-a native UI slash command.
+If the user includes the standalone token `RUN_ROUTER` at the beginning or end
+of a complex validation or realignment prompt, treat it as an explicit request
+to run `scripts/run_router.py --mode realignment`. Do not answer the work order
+directly in the coordinator session: collect the user prompt and attachment
+paths into a temporary instructions file, invoke the orchestrator through the
+available runtime, and return its phase/checkpoint results. Use
+`RUN_ROUTER_AUDIT` for read-only validation with `--mode audit`. Carry each
+phase output into the next one. These are skill trigger conventions, not native
+UI commands.
 
 ## Default routing policy
 

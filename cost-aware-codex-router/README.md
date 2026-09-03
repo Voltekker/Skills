@@ -57,6 +57,7 @@ python3 scripts/run_router.py \
 Realignment permits code and test changes only in remediation/verification;
 deployment, push, and secret changes remain out of scope.
 
-The literal `/run_router` at the top or bottom of a prompt is the skill's
-trigger convention. Native UI slash-command registration is not provided by
-the Codex Skills format.
+Put `RUN_ROUTER` at the top or bottom of a new task to request the full
+realignment workflow, or `RUN_ROUTER_AUDIT` for read-only validation. The skill
+uses the available runtime to invoke the orchestrator; these are trigger
+conventions, not native UI command registrations.
