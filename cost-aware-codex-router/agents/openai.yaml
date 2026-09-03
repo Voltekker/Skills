@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cost-Aware Codex Router"
+  short_description: "Route coding work by cost, complexity, phase, and estimated duration"
+  default_prompt: "Assess this coding task before executing it. Estimate a realistic planning time range, split long-horizon work into bounded phases, recommend the cheapest capable model/reasoning level for each phase, and escalate only when concrete complexity justifies it."
