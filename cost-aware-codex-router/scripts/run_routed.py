@@ -38,7 +38,9 @@ def main():
         independent_review=args.independent_review,
     )
     model_id = os.environ.get(f"COST_ROUTER_{model.upper()}_MODEL", MODEL_IDS[model])
-    command = ["codex", "exec", "--model", model_id, "--cd", str(args.cd)]
+    command = ["codex", "exec", "--model", model_id,
+               "-c", f'model_reasoning_effort="{reasoning}"',
+               "--cd", str(args.cd)]
     print(f"ROUTED_MODEL={model_id}")
     print(f"ROUTED_REASONING={reasoning}")
     if args.dry_run:
