@@ -27,6 +27,11 @@ at each phase boundary and apply its `MODEL` and `REASONING` result to the next
 task. Do not switch a parent session by implication; only use an explicit
 runtime override that reports success.
 
+For Codex CLI users, use `scripts/run_routed.py --phase <phase>`. It starts a
+fresh `codex exec --model ...` process, which is the supported way to apply the
+choice. Pass the compact handoff artifact or phase prompt through stdin. Use
+`--dry-run` to inspect the selected model without starting Codex.
+
 ## Default routing policy
 
 ### Luna + medium

@@ -6,6 +6,7 @@ A Codex skill for preventing expensive monolithic coding runs.
 - `SKILL.md` — routing, escalation and checkpoint policy.
 - `scripts/estimate_task.py` — lightweight planning-time estimator.
 - `scripts/route_task.py` — deterministic phase/model recommendation helper.
+- `scripts/run_routed.py` — launches a fresh Codex CLI phase with the selected model.
 - `references/PLAYCE_PROFILE.md` — profile derived from the supplied PLAYCE realignment work order.
 - `agents/openai.yaml` — UI metadata.
 
@@ -26,3 +27,11 @@ Run the estimator again after Phase 1 with the actual number of remediation item
 
 For task-level model selection, run `python3 scripts/route_task.py --phase implementation`.
 Apply its result only through a runtime that supports explicit model overrides.
+
+To apply the choice with Codex CLI:
+
+```bash
+python3 scripts/run_routed.py --phase implementation --cd /path/to/repo < phase-prompt.md
+```
+
+The launcher starts a new process with `--model`; it does not mutate an already-running session.
